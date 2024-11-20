@@ -54,6 +54,7 @@ import Button from '../Button/Button'
 import ModalOverlay from '../Modal/ModalOverlay'
 import NoteConflictResolutionModal from './NoteConflictResolutionModal/NoteConflictResolutionModal'
 import Icon from '../Icon/Icon'
+import RoundIconButton from '../Button/RoundIconButton'
 
 function sortAlphabetically(array: ComponentInterface[]): ComponentInterface[] {
   return array.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
@@ -830,7 +831,13 @@ class NoteView extends AbstractComponent<NoteViewProps, State> {
         ? 'component'
         : 'plain'
 
+    const editorElement =
+      editorMode === 'super'
+        ? document.getElementById(SuperEditorContentId)
+        : document.getElementById(ElementIds.NoteTextEditor)
+
     const shouldShowConflictsButton = this.state.conflictedNotes.length > 0 && !this.state.readonly
+    const shouldShowTopBottomButtons = editorElement && (editorMode === 'super' || editorMode === 'plain')
 
     return (
       <div aria-label="Note" className="section editor sn-component h-full md:max-h-full" ref={this.noteViewElementRef}>
@@ -924,8 +931,31 @@ class NoteView extends AbstractComponent<NoteViewProps, State> {
                       notesController={this.application.notesController}
                       onClickPreprocessing={this.ensureNoteIsInsertedBeforeUIAction}
                     />
+                    {shouldShowTopBottomButtons && (
+                      <>
+                        <RoundIconButton
+                          label="Scroll to bottom"
+                          onClick={() => {
+                            editorElement.scrollTop = editorElement.scrollHeight
+                          }}
+                          icon="chevron-down"
+                          aria-label="Scroll to bottom"
+                          title="Scroll to bottom"
+                        />
+                        <RoundIconButton
+                          label="Scroll to top"
+                          onClick={() => {
+                            editorElement.scrollTop = 0
+                          }}
+                          icon="chevron-up"
+                          aria-label="Scroll to top"
+                          title="Scroll to top"
+                        />
+                      </>
+                    )}
                   </>
                 )}
+
                 <NotesOptionsPanel
                   notesController={this.application.notesController}
                   onClick={this.triggerSyncOnAction}
