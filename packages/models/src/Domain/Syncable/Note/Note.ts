@@ -19,6 +19,7 @@ export class SNNote extends DecryptedItem<NoteContent> implements NoteContentSpe
   public readonly editorWidth?: EditorLineWidth
   public readonly noteType?: NoteType
   public readonly authorizedForListed: boolean
+  public readonly cursorPosition: number
 
   /** The package_info.identifier of the editor (not its uuid), such as org.standardnotes.advanced-markdown */
   public readonly editorIdentifier?: string
@@ -36,6 +37,7 @@ export class SNNote extends DecryptedItem<NoteContent> implements NoteContentSpe
     this.noteType = this.payload.content.noteType
     this.editorIdentifier = this.payload.content.editorIdentifier
     this.authorizedForListed = this.payload.content.authorizedForListed || false
+    this.cursorPosition = this.payload.content.cursorPosition || 0
 
     if (!this.noteType) {
       const prefersPlain = this.getAppDomainValueWithDefault(AppDataField.LegacyPrefersPlainEditor, false)

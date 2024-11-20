@@ -804,6 +804,16 @@ class NoteView extends AbstractComponent<NoteViewProps, State> {
     this.controller.syncNow()
   }
 
+  // TODO: implement for super note
+  focusToSavedCursorPosition = () => {
+    const element = document.getElementById(ElementIds.NoteTextEditor) as HTMLInputElement
+    if (element) {
+      element.selectionStart = this.note.cursorPosition
+      element.selectionEnd = this.note.cursorPosition
+      element.focus()
+    }
+  }
+
   override render() {
     if (this.controller.dealloced) {
       return null
@@ -838,6 +848,7 @@ class NoteView extends AbstractComponent<NoteViewProps, State> {
 
     const shouldShowConflictsButton = this.state.conflictedNotes.length > 0 && !this.state.readonly
     const shouldShowTopBottomButtons = editorElement && (editorMode === 'super' || editorMode === 'plain')
+    const shouldShowContinueEditingButton = editorElement && editorMode === 'plain'
 
     return (
       <div aria-label="Note" className="section editor sn-component h-full md:max-h-full" ref={this.noteViewElementRef}>
@@ -952,6 +963,15 @@ class NoteView extends AbstractComponent<NoteViewProps, State> {
                           title="Scroll to top"
                         />
                       </>
+                    )}
+                    {shouldShowContinueEditingButton && (
+                      <RoundIconButton
+                        label="Continue editing"
+                        onClick={this.focusToSavedCursorPosition}
+                        icon="pencil-filled"
+                        title="Continue editing"
+                        aria-label="Continue editing"
+                      />
                     )}
                   </>
                 )}

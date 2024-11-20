@@ -112,9 +112,15 @@ export const PlainEditor = forwardRef<PlainEditorInterface, Props>(
 
       setIsPendingLocalPropagation(true)
 
-      void controller.saveAndAwaitLocalPropagation({ text: text, isUserModified: true }).then(() => {
-        setIsPendingLocalPropagation(false)
-      })
+      void controller
+        .saveAndAwaitLocalPropagation({
+          text: text,
+          isUserModified: true,
+          cursorPosition: currentTarget.selectionStart,
+        })
+        .then(() => {
+          setIsPendingLocalPropagation(false)
+        })
     }
 
     const onContentFocus = useCallback(() => {
@@ -254,6 +260,7 @@ export const PlainEditor = forwardRef<PlainEditorInterface, Props>(
               text: editor.value,
               bypassDebouncer: true,
               isUserModified: true,
+              cursorPosition: editor.selectionStart || 0,
             })
           },
         })

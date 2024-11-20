@@ -25,6 +25,7 @@ export type NoteSaveFunctionParams = {
   isUserModified?: boolean
   dontGeneratePreviews?: boolean
   previews?: { previewPlain: string; previewHtml?: string }
+  cursorPosition?: number
   customMutate?: (mutator: NoteMutator) => void
   onLocalPropagationComplete?: () => void
 }
@@ -217,6 +218,10 @@ export class NoteSyncController {
 
         if (params.text != undefined) {
           noteMutator.text = params.text
+        }
+
+        if (params.cursorPosition) {
+          noteMutator.cursorPosition = params.cursorPosition
         }
 
         if (params.previews) {

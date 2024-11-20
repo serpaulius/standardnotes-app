@@ -48,6 +48,10 @@ export class NoteMutator extends DecryptedItemMutator<NoteContent> {
     this.mutableContent.authorizedForListed = authorizedForListed
   }
 
+  set cursorPosition(cursorPosition: number) {
+    this.mutableContent.cursorPosition = cursorPosition
+  }
+
   toggleSpellcheck(): void {
     if (this.mutableContent.spellcheck == undefined) {
       this.mutableContent.spellcheck = false

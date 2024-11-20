@@ -13,6 +13,8 @@ export interface NoteContentSpecialized {
   noteType?: NoteType
   editorIdentifier?: string
   authorizedForListed?: boolean
+  // FIXME: naming - selection vs position?
+  cursorPosition?: number
 }
 
 export type NoteContent = NoteContentSpecialized & ItemContent
